@@ -107,7 +107,7 @@ startBtn.onclick = async () => {
 
   try {
     const loadStart = performance.now();
-    model = await tf.loadLayersModel(`${modelPath}/model.json`);
+    model = await tf.loadGraphModel(`${modelPath}/model.json`);
     const loadEnd = performance.now();
     cpuTimeDisplay.innerText = `Model Download Time: ${(loadEnd - loadStart).toFixed(2)} ms`;
     updateStatus("Model loaded successfully!", 60);
