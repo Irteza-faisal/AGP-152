@@ -91,26 +91,46 @@ startBtn.onclick = async () => {
 
   const modelPath = '/tfjs_model';
 
-  try {
-    const modelSizeMB = await getModelSizeMB(modelPath);
-    storageDisplay.innerText = `Model Size: ${modelSizeMB.toFixed(2)} MB`;
+  let modelSizeMB;
 
-    updateStatus("Loading model into memory...", 40);
+  try {
+    modelSizeMB = await getModelSizeMB(modelPath);
+    storageDisplay.innerText = `Model Size: ${modelSizeMB.toFixed(2)} MB`;
+  } catch (err) {
+    console.error("Error fetching model size:", err);
+    updateStatus("Failed to fetch model size. Check model path or server setup.", 100);
+    alert("Model metadata load failed: " + err.message);
+    return;
+  }
+
+  updateStatus("Loading model into memory...", 40);
+
+  try {
     const loadStart = performance.now();
     model = await tf.loadGraphModel(`${modelPath}/model.json`);
     const loadEnd = performance.now();
     cpuTimeDisplay.innerText = `Model Download Time: ${(loadEnd - loadStart).toFixed(2)} ms`;
-    
-    updateStatus("Model loaded, initializing camera...", 70);
-    await requestCameraAccess();
+    updateStatus("Model loaded successfully!", 60);
+  } catch (err) {
+    console.error("Error loading TensorFlow model:", err);
+    updateStatus("Failed to load model. Ensure model files exist and are accessible.", 100);
+    alert("Model loading failed: " + err.message);
+    return;
+  }
 
+  updateStatus("Initializing camera...", 70);
+
+  try {
+    await requestCameraAccess();
+    updateStatus("Camera initialized successfully!", 100);
     predictBtn.style.display = 'inline-block';
   } catch (err) {
-    console.error("Error during setup:", err);
-    updateStatus("Failed to access camera. Please allow permission and refresh.", 100);
-    alert('Camera access failed. Check your permissions.');
+    console.error("Error accessing camera:", err);
+    updateStatus("Failed to access camera. Please allow permissions.", 100);
+    alert("Camera access failed: " + err.message);
   }
 };
+
 
 predictBtn.onclick = async () => {
   const inputTensor = tf.tidy(() => {
