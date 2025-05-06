@@ -17,4 +17,4 @@ jobs:
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_AGE_GENDER_PREDICTER }}
-          projectId: age-gender-predicter
+          projectId: age-gender-predicter-152
