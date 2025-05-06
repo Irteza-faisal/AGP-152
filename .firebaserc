@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "age-gender-predicter-152"
-  }
+    "default": "age-gender-predictor-152",
+    "AGP152": "age-gender-predictor-152"
+  },
+  "targets": {},
+  "etags": {}
 }
