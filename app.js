@@ -135,7 +135,7 @@ startBtn.onclick = async () => {
 predictBtn.onclick = async () => {
   const inputTensor = tf.tidy(() => {
     return tf.browser.fromPixels(video)
-      .resizeNearestNeighbor([128, 128])
+      .resizeNearestNeighbor([224, 224])
       .toFloat()
       .div(255.0)
       .expandDims();
